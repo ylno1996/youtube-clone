@@ -5,7 +5,7 @@ const userRouter = express.Router();
 
 userRouter.get("/logout", logOut);
 userRouter.get("/edit", edit);
-userRouter.get("/remove", deleteU);
+userRouter.get("/delete", deleteU);
 userRouter.get("/:id(\\d+)", see);
 
 export default userRouter;
