@@ -1,4 +1,5 @@
 extends base.pug
 
 block content 
-    h1 비디오 보기
+    h3 조회수: #{video.views} 
+    a(href=`${video.id}/edit`) 비디오 편집

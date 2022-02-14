@@ -1,0 +1,6 @@
+extends base
+
+block content
+    form(method="POST", action="/videos/upload")
+        input(type="text", placeholder="제목" , required, name="title")
+        input(type="submit", value="영상 업로드")

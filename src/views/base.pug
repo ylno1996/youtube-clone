@@ -4,15 +4,22 @@ html(lang="ko")
         title #{pageTitle} | 클로닝
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")
     body 
-        header 
+        header
             nav 
-                ul 
+                ul     
                     if fakeUser.loggedIn 
                         li 
                             a(href="/login") Log Out
+    
                     else 
                         li 
-                            a(href="/login") Log In     
+                            a(href="/login") Log In   
+                ul
+                    li 
+                        a(href="/") 메인 화면으로
+                ul 
+                    li 
+                        a(href="/videos/upload") 영상 업로드  
             h1=pageTitle
         main
             block content

@@ -3,7 +3,7 @@ const fakeUser = {
     loggedIn: false,
 };
 
-const videos = [
+let videos = [
     {
         title: "1st Video",
         rating: 7,
@@ -40,9 +40,38 @@ const videos = [
 
 
 export const homeVideos = (req, res) => res.render("home", {pageTitle: "집!", fakeUser, videos});
-export const watch = (req, res) => res.render("watch");
-export const edit = (req, res) => res.send(`EDIT The Video #${req.params.id}`);
+export const watch = (req, res) => {
+    const id = req.params.id;
+    const video = videos[id-1];
+    res.render("watch", {pageTitle: `${video.title} 보는 중`, fakeUser, video})};
+export const getEdit = (req, res) => {
+    const video = videos[(req.params.id)-1];
+    res.render("edit", {pageTitle: `${video.title}  수정 중`,fakeUser, video})};
 export const search = (req, res) => res.send("Search Video");
 export const deleteV = (req, res) => res.send(`Delete Video #${req.params.id}`);
 export const upload = (req, res) => res.send("Upload Video");
 
+export const postEdit = (req, res) => {
+    const id = req.params.id;
+    const title = req.body.title;
+    videos[id-1].title = title;
+    res.redirect(`/videos/${id}`);
+};
+
+export const getUpload = (req, res) => {
+res.render("upload", {pageTitle: "비디오 업로드",fakeUser})
+};
+
+export const postUpload = (req, res) => {
+    const title = req.body.title;
+    const newVideo = {
+        title, 
+        rating: 3,
+        comments: 5,
+        createdAt: "2005-12-01",
+        views: 55981,
+        id: videos.length +1,
+    };
+    videos.push(newVideo);
+res.redirect("/");
+};
