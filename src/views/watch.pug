@@ -1,5 +1,9 @@
 extends base.pug
 
 block content 
-    h3 조회수: #{video.views} 
-    a(href=`${video.id}/edit`) 비디오 편집
+    p=video.description
+    div 
+        small=video.createdAt
+    a(href=`${video.id}/edit`) 영상 편집 &rarr;
+    br
+    a(href=`${video.id}/delete`) 영상 삭제 &rarr;

@@ -1,7 +1,9 @@
 extends base.pug
 
 block content 
-    h3  영상 제목 바꾸기~
+    h3  영상 업데이트
     form(method="POST") 
-        input(name="title",placeholder="Video Title", value=pageTitle, required)
+        input(type="text",placeholder="Video Title", value=video.title, required, name="title")
+        input(type="text", placeholder="설명" , value=video.description,required, name="description")
+        input(type="text", placeholder="해시태그를 쉼표로 구분해주세요.", value=video.hashtags.join() , name="hashtags")
         input(type="submit", value="저장하기")
