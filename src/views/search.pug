@@ -1,6 +1,10 @@
 extends base
+include mixins/video 
 
 block content 
     form(method="GET")
         input(placeholder="제목으로 검색", type="text" , name="keyword") 
         input(type="submit", value="검색하기")
+
+    each video in videos 
+        +video(video) 

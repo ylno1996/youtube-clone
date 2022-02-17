@@ -7,7 +7,7 @@ Video.find({}, (error,videos) => {
 */
 const pageNotFound = "영상을 찾을 수 없습니다."
 
-export const homeVideos = async(req, res) => {
+export const home = async(req, res) => {
 
     const videos = await Video.find({}).sort({createdAt:"desc"});
     console.log(videos)
@@ -22,7 +22,7 @@ export const watch = async (req, res) => {
     if (video) {
     return res.render("watch", {pageTitle: `${video.title} 보는 중`, video});
     }   
-    return res.render("404", {pageTitle: pageNotFound})
+    return res.status(404).render("404", {pageTitle: pageNotFound})
 };
 
 
@@ -32,7 +32,7 @@ export const getEdit = async (req, res) => {
     if (video) {
     return res.render("edit", {pageTitle: `${video.title} 편집`, video})
     }
-    return  res.render("404", {pageTitle: pageNotFound})
+    return  res.status(404).render("404", {pageTitle: pageNotFound})
 };
 
 
@@ -86,8 +86,15 @@ export const deleteV = async (req, res) => {
 
     
 
-export const search = (req, res) => {
+export const search = async (req, res) => {
     const keyword = req.query.keyword;
-    console.log(keyword);
-    return res.render("search", {pageTitle:"검색"})
+    let videos = [];
+    if (keyword) {
+        videos = await Video.find({
+            title: {
+                $regex: new RegExp(`${keyword}`, "i"),
+            },
+        });
+    }
+    return res.render("search", {pageTitle:"검색", videos})
 };

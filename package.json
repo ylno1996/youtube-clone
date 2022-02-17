@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/ylno1996/youtube-clone#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "mongoose": "^6.2.1",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"
