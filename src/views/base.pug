@@ -7,17 +7,20 @@ html(lang="ko")
         header
             nav 
                 ul      
-                        if !req
+                    if loggedIn
                         li 
-                            a(href="/login") Log Out
+                            a(href="/login") 로그아웃
                         li 
-                            a(href="/login") Log In   
+                            a(href="/profile") #{loggedInUser.name}의 프로필
+                    else
+                        li 
+                            a(href="/login") 로그인   
                         li 
                             a(href="/join") 회원가입                         
-                        li 
-                            a(href="/") 메인 화면으로
-                        li
-                            a(href="/search") 검색 
+                    li 
+                        a(href="/") 메인 화면으로
+                    li
+                        a(href="/search") 검색 
 
                 ul 
                     li 
