@@ -1,10 +1,10 @@
 import User from "../models/User";
-
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => res.render("join", {pageTitle: "회원가입"}) ;
 export const postJoin = async (req, res) => {
-    const {name, username, email, password, password2, loaction} = req.body;
+    const {name, username, email, password, password2, location} = req.body;
     const exits = await User.exists({$or: [{username}, {email}]});
     if (password !== password2) {
         return res.status(400).render("join", {
@@ -20,7 +20,7 @@ export const postJoin = async (req, res) => {
     }
     try {
         await User.create({
-            name, username, email, password, loaction,
+            name, username, email, password, location,
         });
         return res.redirect("/login");
     } catch (error) {
@@ -56,16 +56,108 @@ export const githubStart = (req,res) => {
         allow_signup: false,
         scope: "read:user user:email",
     };
-    const params = new URLSearchParams(config).toString()
+    const params = new URLSearchParams(config).toString();
     const url = `${base}?${params}`;
     return res.redirect(url);
 };
 
-export const githubDone = (req,res) => {
+export const githubDone = async (req,res) => {
+    const base ="https://github.com/login/oauth/access_token";
+    const api = "https://api.github.com";
+    const config = {
+        client_id: process.env.GH_CLIENT,
+        client_secret: process.env.GH_SECRET,
+        code: req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+
+    const url = `${base}?${params}`;
+
+    const data = await ( await fetch(url, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+        },
+      })
+    ).json();
+
+      if ("access_token" in data) {
+        const {access_token} = data;
+        const userRequest = await ( await fetch(`${api}/user`, {
+            headers: {
+                Authorization: `token ${access_token}`
+            }
+        })
+        ).json();
+
+        console.log(userRequest)
+
+        const emailRequest = await ( await fetch(`${api}/user/emails`, {
+            headers: {
+                Authorization: `token ${access_token}`
+            }
+        })
+        ).json();
+
+        console.log(emailRequest)
+        const emailObj = emailRequest.find(
+            (email) => email.primary === true && email.verified === true
+        );
+        if (!emailObj) {
+            return res.redirect("/")
+        }
+        const user = await User.findOne({email: emailObj.email});
+        if (user) {
+            req.session.loggedIn = true;
+            req.session.user = user;
+            return res.redirect("/");
+        } else {
+            
+        }
+    } else {
+        return res.redirect("/login");
+      };
+
+};
+
+export const logOut = (req, res) => {
+    req.session.destroy();
     return res.redirect("/");
 };
 
-export const edit = (req, res) => res.send("EDIT");
-export const deleteU = (req, res) => res.send("DELETE USER");
-export const logOut = (req, res) => res.send("Logout");
+
+export const getEdit = (req, res) => {
+    res.render("edit-profile", {pageTitle: "프로필 수정하기"});
+};
+export const postEdit = async (req, res) => {
+    const {
+        session: {
+            user: { _id},
+        },
+        body: {name,username, email, location},
+    } = req;
+    if (name !== req.session.user.name || email !== req.session.user.email) {
+        const exits = await User.exists({$or: [{username}, {email}]});
+        if (exits){
+            return res.status(400).render("edit-profile", {
+                pageTitle: "프로필 수정하기",
+                errorMsg: "입력하신 닉네임 또는 이메일이 이미 사용중입니다."
+            })
+        }
+    }
+    const updated = await User.findByIdAndUpdate( _id, {name,username,email,location,}, {new: true});
+    req.sessiosn.user = updated;
+    res.send("EDIT");
+};
+
+export const getPassword = (req, res) => {
+    return res.render("change-password", {pageTitle: "비밀번호 변경"});
+};
+
+export const postPassword = (req, res) => {
+    return res.redirect("/")
+};
+
+
+
 export const see = (req, res) => res.send("See User");

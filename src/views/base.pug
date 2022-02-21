@@ -9,9 +9,9 @@ html(lang="ko")
                 ul      
                     if loggedIn
                         li 
-                            a(href="/login") 로그아웃
+                            a(href="/users/logout") 로그아웃
                         li 
-                            a(href="/profile") #{loggedInUser.name}의 프로필
+                            a(href="/users/edit") #{loggedInUser.name}의 프로필 수정
                     else
                         li 
                             a(href="/login") 로그인   
