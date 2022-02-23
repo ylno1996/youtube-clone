@@ -2,18 +2,18 @@ import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
-export const getJoin = (req, res) => res.render("join", {pageTitle: "회원가입"}) ;
+export const getJoin = (req, res) => res.render("user/join", {pageTitle: "회원가입"}) ;
 export const postJoin = async (req, res) => {
     const {name, username, email, password, password2, location} = req.body;
     const exits = await User.exists({$or: [{username}, {email}]});
     if (password !== password2) {
-        return res.status(400).render("join", {
+        return res.status(400).render("user/join", {
             pageTitle: "회원가입",
             errorMsg: "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
         })
     }
     if (exits){
-        return res.status(400).render("join", {
+        return res.status(400).render("user/join", {
             pageTitle: "회원가입",
             errorMsg: "입력하신 닉네임 또는 이메일이 이미 사용중입니다."
         })
@@ -31,17 +31,17 @@ export const postJoin = async (req, res) => {
     }
 };
 
-export const getLogIn = (req, res) => res.render("login", {pageTitle: "로그인"});
+export const getLogIn = (req, res) => res.render("user/login", {pageTitle: "로그인"});
 
 export const postLogIn = async (req, res) => {
     const {username, password} = req.body;
     const user = await User.findOne({username});
     if (!user) {
-        return res.status(400).render("login", {pageTitle: "로그인", errorMsg:"해당 아이디가 존재하지 않습니다." })
+        return res.status(400).render("user/login", {pageTitle: "로그인", errorMsg:"해당 아이디가 존재하지 않습니다." })
     }
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) {
-        return res.status(400).render("login", {
+        return res.status(400).render("user/login", {
             pageTitle: "로그인", errorMsg: "잘못된 비밀번호",        })
     }
    req.session.loggedIn = true;
@@ -106,13 +106,24 @@ export const githubDone = async (req,res) => {
         if (!emailObj) {
             return res.redirect("/")
         }
-        const user = await User.findOne({email: emailObj.email});
+        let user = await User.findOne({email: emailObj.email});
         if (user) {
             req.session.loggedIn = true;
             req.session.user = user;
             return res.redirect("/");
         } else {
-            
+            user = await User.create({
+                email: emailObj.email,
+                username: userRequest.login,
+                password: "",
+                name: `g-${userRequest.login}`,
+                location: userRequest.location,
+                socialOnly : true,
+                avatarUrl: userRequest.avatar_url,
+            });
+            req.session.loggedIn = true;
+            req.session.user = user;
+            return res.redirect("/");
         }
     } else {
         return res.redirect("/login");
@@ -127,7 +138,7 @@ export const logOut = (req, res) => {
 
 
 export const getEdit = (req, res) => {
-    res.render("edit-profile", {pageTitle: "프로필 수정하기"});
+    res.render("user/edit-profile", {pageTitle: "프로필 수정하기"});
 };
 export const postEdit = async (req, res) => {
     const {
@@ -135,27 +146,47 @@ export const postEdit = async (req, res) => {
             user: { _id},
         },
         body: {name,username, email, location},
+        file,
     } = req;
     if (name !== req.session.user.name || email !== req.session.user.email) {
         const exits = await User.exists({$or: [{username}, {email}]});
         if (exits){
-            return res.status(400).render("edit-profile", {
+            return res.status(400).render("user/edit-profile", {
                 pageTitle: "프로필 수정하기",
                 errorMsg: "입력하신 닉네임 또는 이메일이 이미 사용중입니다."
             })
         }
     }
     const updated = await User.findByIdAndUpdate( _id, {name,username,email,location,}, {new: true});
-    req.sessiosn.user = updated;
+    req.session.user = updated;
     res.send("EDIT");
 };
 
 export const getPassword = (req, res) => {
-    return res.render("change-password", {pageTitle: "비밀번호 변경"});
+    if (req.session.user.socialOnly === true){
+        return res.redirect("/");
+    }
+    return res.render("user/change-password", {pageTitle: "비밀번호 변경"});
 };
 
-export const postPassword = (req, res) => {
-    return res.redirect("/")
+export const postPassword = async (req, res) => {
+    const {
+        sessiosn : {
+            user: { _id},
+        },
+        body: {oldPassword, newPassword, newPasswordConfirm},
+    } = req; 
+    const user = await User.findById(_id);
+    const verify = await bcrypt.compare(oldPassword, user.password);
+    if (!verify) {
+        return res.status(400).render("user/change-password", {pageTitle: "비밀번호 변경", errorMsg: "비밀번호가 틀렸습니다."}
+        )};
+    if (newPassword !== newPasswordConfirm) {
+        return res.status(400).render("user/change-password", {pageTitle: "비밀번호 변경", errorMsg: "새 비밀번호가 일치하지 않습니다."}
+        )};
+    user.password = newPassword;
+    await user.save();
+    return res.redirect("/user/logout")
 };
 
 

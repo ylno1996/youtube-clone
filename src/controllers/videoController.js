@@ -20,7 +20,7 @@ export const watch = async (req, res) => {
     const video = await Video.findById(id);
     console.log(video);
     if (video) {
-    return res.render("watch", {pageTitle: `${video.title} 보는 중`, video});
+    return res.render("video/watch", {pageTitle: `${video.title} 보는 중`, video});
     }   
     return res.status(404).render("404", {pageTitle: pageNotFound})
 };
@@ -30,7 +30,7 @@ export const getEdit = async (req, res) => {
     const id = req.params.id;
     const video = await Video.findById(id);
     if (video) {
-    return res.render("edit", {pageTitle: `${video.title} 편집`, video})
+    return res.render("video/edit", {pageTitle: `${video.title} 편집`, video})
     }
     return  res.status(404).render("404", {pageTitle: pageNotFound})
 };
@@ -51,7 +51,7 @@ export const postEdit = async (req, res) => {
 
 
 export const getUpload = (req, res) => {
-res.render("upload", {pageTitle: "비디오 업로드"})
+res.render("video/upload", {pageTitle: "비디오 업로드"})
 };
 
 
@@ -71,7 +71,7 @@ export const postUpload = async (req, res) => {
     return res.redirect("/");
     }   catch (err) {
         console.log(err)
-        return res.render("upload", {pageTitle: "비디오 업로드", errM: err._message,})
+        return res.render("video/upload", {pageTitle: "비디오 업로드", errM: err._message,})
     }
 };
 
@@ -96,5 +96,5 @@ export const search = async (req, res) => {
             },
         });
     }
-    return res.render("search", {pageTitle:"검색", videos})
+    return res.render("video/search", {pageTitle:"검색", videos})
 };

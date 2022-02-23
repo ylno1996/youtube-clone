@@ -1,13 +1,16 @@
-extends base
+extends ../base
 
 block content
     if errorMsg
         span=errorMsg
     form(method="POST")
+        label(for="avatar") 아바타
+        input(name="avatar", type="file", id="avatar", accepy="*/image" ) 
         input(name="name",type="text",placeholder="이름", required, value=loggedInUser.name)
         input(name="username",type="text",placeholder="아이디", required, value=loggedInUser.username)
         input(name="email",type="email",placeholder="이메일", required, value=loggedInUser.email)
         input(name="location",type="text",placeholder="지역", required, value=loggedInUser.location)
         input(type="submit",value="수정하기")
-        hr
-        a(href="change-password") 비밀번호 변경하기 &rarr;
+        if !loggedInUser.socialOnly
+            hr
+            a(href="change-password") 비밀번호 변경하기 &rarr;
