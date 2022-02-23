@@ -171,7 +171,7 @@ export const getPassword = (req, res) => {
 
 export const postPassword = async (req, res) => {
     const {
-        sessiosn : {
+        session : {
             user: { _id},
         },
         body: {oldPassword, newPassword, newPasswordConfirm},
