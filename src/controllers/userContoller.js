@@ -1,21 +1,29 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import { editProfileText , existingName, existingEmail, signUpText} from "../misc";
 
-export const getJoin = (req, res) => res.render("user/join", {pageTitle: "회원가입"}) ;
+export const getJoin = (req, res) => res.render("user/join", {pageTitle: signUpText}) ;
 export const postJoin = async (req, res) => {
     const {name, username, email, password, password2, location} = req.body;
-    const exits = await User.exists({$or: [{username}, {email}]});
+    const exitsName = await User.exists([{username}]);
+    const exitsEmail = await User.exists([{email}]);
     if (password !== password2) {
         return res.status(400).render("user/join", {
-            pageTitle: "회원가입",
+            pageTitle: signUpText,
             errorMsg: "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
         })
     }
-    if (exits){
+    if (exitsName){
         return res.status(400).render("user/join", {
-            pageTitle: "회원가입",
-            errorMsg: "입력하신 닉네임 또는 이메일이 이미 사용중입니다."
+            pageTitle: signUpText,
+            errorMsg: existingName
+        })
+    }
+    if (exitsEmail){
+        return res.status(400).render("user/join", {
+            pageTitle: signUpText,
+            errorMsg: existingEmail
         })
     }
     try {
@@ -138,28 +146,46 @@ export const logOut = (req, res) => {
 
 
 export const getEdit = (req, res) => {
-    res.render("user/edit-profile", {pageTitle: "프로필 수정하기"});
+    res.render("user/edit-profile", {pageTitle: editProfileText});
 };
 export const postEdit = async (req, res) => {
     const {
         session: {
-            user: { _id},
+            user: {_id},
         },
         body: {name,username, email, location},
-        file,
+        
     } = req;
-    if (name !== req.session.user.name || email !== req.session.user.email) {
-        const exits = await User.exists({$or: [{username}, {email}]});
-        if (exits){
-            return res.status(400).render("user/edit-profile", {
-                pageTitle: "프로필 수정하기",
-                errorMsg: "입력하신 닉네임 또는 이메일이 이미 사용중입니다."
-            })
+    if (req.session.user.username !== username || req.session.user.email !== email) {
+        const foundedUsername = await User.findOne({username});
+        const foundedEmail = await User.findOne({email});
+        if (req.session.user.username !== username && req.session.user.email !== email) {
+            if (foundedUsername && foundedEmail) {
+                return res.render("user/edit-profile", {pageTitle: editProfileText, errorMsg: "닉네임과 이메일 모두 이미 존재합니다."})
+            }
+            if (foundedUsername && !foundedEmail) {
+                return res.render("user/edit-profile", {pageTitle: editProfileText, errorMsg: existingName})
+            }
+            if (!foundedUsername && foundedEmail) {
+                return res.render("user/edit-profile", {pageTitle: editProfileText, errorMsg: existingEmail})
+            }
+        } else {
+            if (req.session.user.username !== username && req.session.user.email == email) {
+                if (foundedUsername) {
+                    return res.render("user/edit-profile", {pageTitle:editProfileText, errorMsg: existingName})
+                }
+            }
+            if (req.session.user.username == username && req.session.user.email !== email) {
+                if (foundedEmail) {
+                    return res.render("user/edit-profile", {pageTitle: editProfileText, errorMsg: existingEmail})
+                }
+            }
         }
+
     }
-    const updated = await User.findByIdAndUpdate( _id, {name,username,email,location,}, {new: true});
-    req.session.user = updated;
-    res.send("EDIT");
+    const updateUser = await User.findByIdAndUpdate( _id, {name, username, email, location}, {new: true});
+    req.session.user = updateUser;
+    res.redirect("/users/edit")
 };
 
 export const getPassword = (req, res) => {
