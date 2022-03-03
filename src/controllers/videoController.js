@@ -1,5 +1,5 @@
-import res from "express/lib/response";
 import Video from "../models/Video";
+import User from "../models/User";
 /*
 Video.find({}, (error,videos) => {
     console.log(error, videos)
@@ -17,7 +17,7 @@ export const home = async(req, res) => {
 
 export const watch = async (req, res) => {
     const id = req.params.id;
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("owner");
     console.log(video);
     if (video) {
     return res.render("video/watch", {pageTitle: `${video.title} 보는 중`, video});
@@ -56,26 +56,39 @@ res.render("video/upload", {pageTitle: "비디오 업로드"})
 
 
 export const postUpload = async (req, res) => {
-    const {title, description, hashtags} = req.body;
+    const {
+        session: {
+        user: {_id},
+        },
+        body: {
+            title, description, hashtags
+        },
+        file,
+    } =req;
     try{
-    await Video.create({
+    console.log(_id);
+    const newVideo = await Video.create({
         title,
+        fileUrl: file.path,
         description,
-
+        owner: _id,
         hashtags: Video.formatHashtags(hashtags),
         meta : {
             views: 0 ,
             rating: 0,
         },
     })
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
     return res.redirect("/");
     }   catch (err) {
         console.log(err)
-        return res.render("video/upload", {pageTitle: "비디오 업로드", errM: err._message,})
+        return res.status(400).render("video/upload", {pageTitle: "비디오 업로드", errM: err._message,})
     }
 };
 
-
+//여기 비디오 지우는거 손봐야함, 유저 db의 비디오항목에서 안사라지는 문제
 
 export const deleteV = async (req, res) => {
     const id = req.params.id;

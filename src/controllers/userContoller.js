@@ -5,22 +5,22 @@ import { editProfileText , existingName, existingEmail, signUpText} from "../mis
 
 export const getJoin = (req, res) => res.render("user/join", {pageTitle: signUpText}) ;
 export const postJoin = async (req, res) => {
+    const foundedUsername = await User.findOne({username});
+    const foundedEmail = await User.findOne({email});
     const {name, username, email, password, password2, location} = req.body;
-    const exitsName = await User.exists([{username}]);
-    const exitsEmail = await User.exists([{email}]);
     if (password !== password2) {
         return res.status(400).render("user/join", {
             pageTitle: signUpText,
             errorMsg: "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
         })
     }
-    if (exitsName){
+    if (foundedUsername){
         return res.status(400).render("user/join", {
             pageTitle: signUpText,
             errorMsg: existingName
         })
     }
-    if (exitsEmail){
+    if (foundedEmail){
         return res.status(400).render("user/join", {
             pageTitle: signUpText,
             errorMsg: existingEmail
@@ -32,7 +32,7 @@ export const postJoin = async (req, res) => {
         });
         return res.redirect("/login");
     } catch (error) {
-        return res.redirect("join", {
+        return res.status(400).render("user/join", {
             pageTitle: "잘못된 요청입니다.",
             errorMsg: error._message,
         });
@@ -151,11 +151,12 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
     const {
         session: {
-            user: {_id},
+            user: {_id, avatarUrl},
         },
         body: {name,username, email, location},
-        
+        file,
     } = req;
+    console.log(file);
     if (req.session.user.username !== username || req.session.user.email !== email) {
         const foundedUsername = await User.findOne({username});
         const foundedEmail = await User.findOne({email});
@@ -183,7 +184,7 @@ export const postEdit = async (req, res) => {
         }
 
     }
-    const updateUser = await User.findByIdAndUpdate( _id, {name, username, email, location}, {new: true});
+    const updateUser = await User.findByIdAndUpdate( _id, {avatarUrl: file ? file.path: avatarUrl,name, username, email, location}, {new: true});
     req.session.user = updateUser;
     res.redirect("/users/edit")
 };
@@ -208,13 +209,20 @@ export const postPassword = async (req, res) => {
         return res.status(400).render("user/change-password", {pageTitle: "비밀번호 변경", errorMsg: "비밀번호가 틀렸습니다."}
         )};
     if (newPassword !== newPasswordConfirm) {
-        return res.status(400).render("user/change-password", {pageTitle: "비밀번호 변경", errorMsg: "새 비밀번호가 일치하지 않습니다."}
+        return res.status(400).render("user/change-password", {pageTitle: "비밀번호 변경", errorMsg: "새 비밀번호가 서로 일치하지 않습니다."}
         )};
     user.password = newPassword;
     await user.save();
-    return res.redirect("/user/logout")
+    return res.redirect("/users/logout")
 };
 
 
 
-export const see = (req, res) => res.send("See User");
+export const see = async (req, res) => {
+    const {id} = req.params;
+    const user = await User.findById(id).populate("videos");
+    if (!user) {
+        return res.status(404).render("404", {pageTitle: "유저를 찾지 못했습니다."})
+    }
+    return res.render("user/profile", {pageTitle: `${user.name}님의 프로필`, user})
+};

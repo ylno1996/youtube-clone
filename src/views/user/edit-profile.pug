@@ -3,9 +3,10 @@ extends ../base
 block content
     if errorMsg
         span=errorMsg
-    form(method="POST")
+    img(src="/" + loggedInUser.avatarUrl)
+    form(method="POST", enctype="multipart/form-data")
         label(for="avatar") 아바타
-        input(name="avatar", type="file", id="avatar", accepy="*/image" ) 
+        input(name="avatar", type="file", id="avatar", accept="image/*" ) 
         input(name="name",type="text",placeholder="이름", required, value=loggedInUser.name)
         input(name="username",type="text",placeholder="아이디", required, value=loggedInUser.username)
         input(name="email",type="email",placeholder="이메일", required, value=loggedInUser.email)
@@ -14,3 +15,6 @@ block content
         if !loggedInUser.socialOnly
             hr
             a(href="change-password") 비밀번호 변경하기 &rarr;
+
+
+//- 현재 img 태그에 소스가 불안정함, "/"의 유무에 따라 이미지의 출력 여부가 갈림, 소스의 경우 "/"가 없어야하고 내부 저장소는 필요

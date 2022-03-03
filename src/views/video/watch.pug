@@ -1,9 +1,15 @@
 extends ../base
 
 block content 
-    p=video.description
+    video(src="/" + video.fileUrl,controls) 
     div 
+        p=video.description
         small=video.createdAt
-    a(href=`${video.id}/edit`) 영상 편집 &rarr;
-    br
-    a(href=`${video.id}/delete`) 영상 삭제 &rarr;
+    div  
+        a(href=`/users/${video.owner._id}`) #{video.owner.name}
+        small 님이 올림
+    if loggedIn     
+        if String(loggedInUser._id) === String(video.owner._id)
+            a(href=`${video.id}/edit`) 영상 편집 &rarr;
+            br
+            a(href=`${video.id}/delete`) 영상 삭제 &rarr;

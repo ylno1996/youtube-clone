@@ -25,7 +25,9 @@ html(lang="ko")
                 ul 
                     if loggedIn
                         li 
-                            a(href="/videos/upload") 영상 업로드  
+                            a(href="/videos/upload") 영상 업로드 
+                        li 
+                            a(href=`/users/${loggedInUser._id}`) 내 프로필   
             h1=pageTitle
         main
             block content
