@@ -1,5 +1,6 @@
 import Video from "../models/Video";
 import User from "../models/User";
+import fs from "fs";
 /*
 Video.find({}, (error,videos) => {
     console.log(error, videos)
@@ -29,10 +30,13 @@ export const watch = async (req, res) => {
 export const getEdit = async (req, res) => {
     const id = req.params.id;
     const video = await Video.findById(id);
-    if (video) {
-    return res.render("video/edit", {pageTitle: `${video.title} 편집`, video})
+    if (!video) {
+        return  res.status(404).render("404", {pageTitle: pageNotFound})
     }
-    return  res.status(404).render("404", {pageTitle: pageNotFound})
+    if (String(video.owner) !== String(req.session.user._id)) {
+        return res.status(403).redirect("/");
+    }
+    return res.render("video/edit", {pageTitle: `${video.title} 편집`, video})
 };
 
 
@@ -88,11 +92,28 @@ export const postUpload = async (req, res) => {
     }
 };
 
-//여기 비디오 지우는거 손봐야함, 유저 db의 비디오항목에서 안사라지는 문제
 
 export const deleteV = async (req, res) => {
     const id = req.params.id;
+    const video = await Video.findById(id);
+    
+    if (!video) {
+        return  res.status(404).render("404", {pageTitle: pageNotFound})
+    }
+    if (String(video.owner) !== String(req.session.user._id)) {
+        return res.status(403).redirect("/");
+    }
     await Video.findByIdAndDelete(id);
+    await User.updateOne({_id: video.owner}, {
+        $pull: {
+            videos: id,
+        },
+    });
+    fs.unlink(video.fileUrl, (err) => {
+        if (err) {
+            return console.error(err)
+        }
+    });
     return res.redirect("/")
 };
 
