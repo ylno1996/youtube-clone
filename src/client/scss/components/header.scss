@@ -1,0 +1,61 @@
+
+header {
+    padding: 1em 3em;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    justify-content: space-between;
+    align-items: center;
+
+    .mainlogo {
+    color: #FFFFFF;
+    margin-left: 1em;
+    }
+    ul {
+        display: flex;
+    }
+    li {
+        margin: 0 1em;
+    }
+    #search__form {
+        width: 700px;
+        display: flex;
+        input {
+            background-color: #121212;
+            border-radius: 2%;
+            color: aliceblue;
+            border: 0.1em solid rgba(255,255,255,0.2) ;
+            font-size: 1.2em;
+            width: 80%;
+            }
+        button {
+            background-color: #323232;
+            color: aliceblue;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 2%;
+            padding: 0.5em 1em;
+        }    
+    }
+
+}
+
+
+.fa-youtube {
+    color: red;
+} 
+
+.home__text {
+    color: #FFFFFF;
+}
+
+.kr {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    vertical-align: super;
+    font-size: 0.3em;
+}
+
+.fa-bars {
+    color: #FFFFFF;
+}

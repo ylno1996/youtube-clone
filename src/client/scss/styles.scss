@@ -1,7 +1,30 @@
-@import "./reset.scss";
-@import "./_variables";
+@import "./config/_reset.scss";
+@import "./config/_variables";
+
+* {
+    font-size: 1vw;
+}
 
 body {
     background-color: $black;
     color: #FFFFFF;
+
+}
+
+
+.btn {
+    background-color: transparent;
+    border: none;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@import "./components/header.scss";
+
+
+main , footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

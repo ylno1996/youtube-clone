@@ -1,0 +1,32 @@
+header
+    div.menu__and__logo
+        button.btn
+            i.fa-solid.fa-bars
+        button.btn.mainlogo 
+            a(href="/") 
+                i.fa-brands.fa-youtube 
+                    span.home__text YouTube
+                span.kr KR
+    div.search__bar
+        form(method="GET" id="search__form") 
+            input(type="search" placeholder="검색" name="search" class="search__input")
+            button(type="submit" class="search__submit")
+                i.fa-solid.fa-magnifying-glass    
+    if loggedIn
+        ul
+            li 
+                a(href="/users/logout") 로그아웃
+            li 
+                a(href="/users/edit") #{loggedInUser.name}의 프로필 수정
+    else
+        ul
+            li 
+                a(href="/login") 로그인   
+            li 
+                a(href="/join") 회원가입                          
+    if loggedIn
+        ul
+            li 
+                a(href="/videos/upload") 영상 업로드 
+            li 
+                a(href=`/users/${loggedInUser._id}`) 내 프로필   
