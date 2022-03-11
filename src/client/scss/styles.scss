@@ -6,11 +6,15 @@
 }
 
 body {
+    
     background-color: $black;
     color: #FFFFFF;
 
 }
 
+a {
+    text-decoration: none;
+}
 
 .btn {
     background-color: transparent;
@@ -27,4 +31,7 @@ main , footer {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+main {
+    margin-top: 1vh;
 }
