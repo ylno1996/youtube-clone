@@ -3,10 +3,12 @@ header
         button.btn
             span.material-icons menu
         button.btn.mainlogo 
-            a(href="/") 
-                img(src="/static/img/yt.svg", alt="yt", id="header__logo")
-                span.home__text YouTube
-                    span.kr KR
+            a(href="/")
+                div.logo 
+                    img(src="/uploads/img/yt.svg", alt="yt", id="header__logo")
+                div.home__text
+                    span MouTube
+                        span.kr KR
     div.search__bar
         form(method="GET" id="search__form") 
             input(type="text" placeholder=" 검색" name="keyword" class="search__input")
@@ -16,26 +18,23 @@ header
         if loggedIn
             ul
                 li 
-                    a(href="/videos/upload")
-                        span.material-icons video_call
+                    span.material-icons.header__video video_call
+                        table
                 li 
-                    a(href="#") 
-                        span.material-icons apps
+                    span.material-icons.header__apps apps
                 li 
-                    a(href="#") 
-                        span.material-icons notifications
+                    span.material-icons.header__notifications notifications
                 li 
-                    a(href="#")
-                        img(src="/" + loggedInUser.avatarUrl, alt="/uploads/avatars/a08c531591d275d87bb1f2a8381a63e6" id="header__avatar") 
-        else   
+                    img(src="/" + loggedInUser.avatarUrl, alt="/uploads/avatars/a08c531591d275d87bb1f2a8381a63e6" id="header__avatar") 
+        else
+            ul   
                 li 
-                    a(href="") 
+                    span.material-icons.header__apps apps
                 li 
-                    a(href="") 
+                    span.material-icons.header__more more_vert
                 li 
-                    a(href="") 
-                li 
-                    a(href="")  
+                    a(href="/login", id="header__login") 로그인   
+
 
     //-    
         if loggedIn

@@ -24,14 +24,19 @@ a {
     }
 }
 
-@import "./components/header.scss";
-
-
 main , footer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 main {
-    margin-top: 1vh;
+    margin-top: 5%;
 }
+
+
+@import "./components/header.scss";
+@import "./components/shared.scss";
+
+
+@import "./components/footer.scss"

@@ -1,5 +1,7 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const  webpack  = require("webpack");
 
 
 module.exports = {
@@ -8,12 +10,15 @@ module.exports = {
     watch: true,
     plugins: [new MiniCssExtractPlugin({
         filename: "css/styles.css",
-    })
+    }),
+    new webpack.ProvidePlugin({
+        $:"jquery",
+        jQuery : "jquery"
+    }),
     ],
     output: {
         filename: "js/main.js",
         path: path.resolve( __dirname, "assets"),
-        clean: true,
     },
     module: {
         rules: [
