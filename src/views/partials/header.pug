@@ -25,7 +25,10 @@ header
                 li 
                     span.material-icons.header__notifications notifications
                 li 
-                    img(src="/" + loggedInUser.avatarUrl, alt="/uploads/avatars/a08c531591d275d87bb1f2a8381a63e6" id="header__avatar") 
+                    if !loggedInUser.avatarUrl || loggedInUser.avatartUrl === ""
+                        img(src="/uploads/avatars/avatar__basic.png", alt="아바타" , class="header__avatar")
+                    else 
+                        img(src="/" + loggedInUser.avatarUrl, alt="아바타" class="header__avatar") 
         else
             ul   
                 li 
@@ -34,7 +37,11 @@ header
                     span.material-icons.header__more more_vert
                 li 
                     a(href="/login", id="header__login") 로그인   
-
+.header-pop.pop
+    ul
+        li
+            span
+                a(href="#") 이게 되는건가? 
 
     //-    
         if loggedIn
