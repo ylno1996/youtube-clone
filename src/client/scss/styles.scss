@@ -1,12 +1,8 @@
 @import "./config/_reset.scss";
 @import "./config/_variables";
 
-* {
-    font-size: 1vw;
-}
-
 body {
-    
+    font-size: 1vw;
     background-color: $black;
     color: #FFFFFF;
 
@@ -31,7 +27,8 @@ main , footer {
     align-items: center;
 }
 main {
-    margin-top: 5%;
+    margin-top: 55px;
+    margin-left: 55px;
 }
 
 

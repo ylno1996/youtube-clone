@@ -1,7 +1,7 @@
 header
     div.menu__and__logo
         button.btn
-            span.material-icons menu
+            span.material-icons.header__menu menu
         button.btn.mainlogo 
             a(href="/")
                 div.logo 
@@ -28,7 +28,7 @@ header
                     if !loggedInUser.avatarUrl || loggedInUser.avatartUrl === ""
                         img(src="/uploads/avatars/avatar__basic.png", alt="아바타" , class="header__avatar")
                     else 
-                        img(src="/" + loggedInUser.avatarUrl, alt="아바타" class="header__avatar") 
+                        img(src=loggedInUser.avatarUrl, alt="아바타" class="header__avatar") 
         else
             ul   
                 li 
@@ -37,12 +37,39 @@ header
                     span.material-icons.header__more more_vert
                 li 
                     a(href="/login", id="header__login") 로그인   
-.header-pop.pop
+.header-column
+    ul.list
+        li 홈
+        li 탐색
+        li Shorts
+        li 구독
+        li Originals
+        li Youtube Music
+        li 보관함
+        li 오프라인 저장
+.header-pop.pop.video-pop
     ul
         li
             span
-                a(href="#") 이게 되는건가? 
-
+                a(href="/videos/upload") 영상 업로드
+.header-pop.pop.apps-pop
+    ul
+        li
+            span
+                a(href="") 이게 되는건가? 
+.header-pop.pop.notify-pop
+    ul
+        li
+            span
+                a(href="") 알림 창 보여주기
+.header-pop.pop.profile-pop
+    ul
+        li
+            span
+                a(href="/users/edit") 프로필 수정 
+        li
+            span
+                a(href="/users/logout") 로그아웃
     //-    
         if loggedIn
             ul.header__user

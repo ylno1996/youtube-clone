@@ -2,23 +2,25 @@
 header {
     position: fixed;
     top: 0;
-    background-color: #202020;
+    background-color: $headerBlack;
     display: flex;
     flex-direction: row;
-    width: 98%;
-    padding: 0.3% 1%;
-    height: 3em;
+    width: 100%;
+    height: 55px;
     justify-content:space-between;
     align-items: center;
+    .header__menu {
+        margin-left: 20px;
+    }
     .menu__and__logo {
         display: flex;
         align-items: center;
-        margin-top: 0.4em;
+        margin-top: 0.5%;
         .mainlogo {
             display: flex;
             color: #FFFFFF;
-            margin-left: 0.1em;
-            font-size: 1.5em;
+            margin-left: 0.2%;
+            font-size: 24px;
             a{
                 display: flex;
             }
@@ -37,7 +39,7 @@ header {
             color: rgba(255,255,255,0.5);
             text-decoration: none;
             vertical-align: super;
-            font-size: 0.3em;
+            font-size: 12px;
             }
             .fa-bars {
             color: #FFFFFF;
@@ -53,50 +55,50 @@ header {
             border-radius: 2%;
             color: #BFBFBF;
             border: 0.1em solid rgba(255,255,255,0.2) ;
-            font-size: 1em;
+            font-size: 16px;
             width: 80%;
             &:focus {
-                outline: 0.1em solid #3EA6FF;
+                outline: 1px solid #3EA6FF;
             }
             }
         button {
-            margin-left: 0.1em;
+            margin-left: 1px;
             background-color: #323232;
             color: aliceblue;
             border: none;
-            border-radius: 2%;
-            padding: 0.5em 1em;
-            font-size: 1em;
+            padding: 3px 15px;
+            font-size: 16px;
             &:hover {
                 cursor: pointer;
             }  
         }
         .material-icons {
-            margin-top: 0.2em;
+            margin-top: 2px;
         }    
     }
     .header__right {
         display: flex;
         align-items: center;
+        margin-right: 20px;
         ul {
             align-items: center;
             display: flex;
             li {
-                padding: 1em;
-                font-size: 0.75em;
+                padding: 10px;
+                font-size: 16px;
             }
         }
         .material-icons {
             color: #323232;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-            font-size: 2em;
+            font-size: 24px;
             &:hover {
                 cursor: pointer;
             }
         }
         .header__avatar {
-            width: 1.6vw;
-            height: 1.6vw;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             &:hover {
                 cursor: pointer;
@@ -111,15 +113,38 @@ header {
     }
 }
 
+.header-column {
+    display: flex;
+    flex-direction: column;
+    top: 55px;
+    position: fixed;
+    height: 100%;
+    width: 45*1.4px;
+    background-color: #212121;
+    ul{
+        li{
+            display: flex;
+            width: 100%;
+            height: 60%;
+            font-size: 10px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            &:hover {
+                background-color: #323232;
+            }
+        }
+    } 
+}
+
 .selected {
     color: #BFBFBF;
 }
 
 .header-pop {
-    background-color: #202020;
+    background-color: $headerBlack;
+    top: 2%;
     position: absolute;
-    top:0;
-    margin-top: 4em;
     margin-left: 80vw;
     color: #BFBFBF;
     display: none;

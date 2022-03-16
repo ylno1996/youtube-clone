@@ -21,7 +21,7 @@ export const watch = async (req, res) => {
     const video = await Video.findById(id).populate("owner");
     console.log(video);
     if (video) {
-    return res.render("video/watch", {pageTitle: `${video.title} 보는 중`, video});
+    return res.render("video/watch", {pageTitle: `${video.title} 시청중`, video});
     }   
     return res.status(404).render("404", {pageTitle: pageNotFound})
 };
