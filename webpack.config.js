@@ -1,6 +1,5 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const  webpack  = require("webpack");
 
 
@@ -19,6 +18,7 @@ module.exports = {
     output: {
         filename: "js/main.js",
         path: path.resolve( __dirname, "assets"),
+        clean: true,
     },
     module: {
         rules: [

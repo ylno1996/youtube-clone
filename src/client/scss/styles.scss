@@ -1,6 +1,9 @@
 @import "./config/_reset.scss";
 @import "./config/_variables";
 
+* {
+    box-sizing: border-box;
+}
 body {
     font-size: 1vw;
     background-color: $black;
@@ -28,7 +31,7 @@ main , footer {
 }
 main {
     margin-top: 55px;
-    margin-left: 55px;
+    margin-left: 70px;
 }
 
 

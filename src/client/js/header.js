@@ -1,13 +1,15 @@
 
 
-
 $('.header__apps').on("click", function (event) {
+    const own = $(this)
+    
     event.preventDefault();
-    if($(this).hasClass('selected')) {
+    outlinedClicked(own);
+    if(own.hasClass('selected')) {
         $('.apps-pop').slideFadeToggle();
-        $(this).removeClass('selected');
+        own.removeClass('selected');
     }   else {
-        $(this).addClass('selected');
+        own.addClass('selected');
         $('.apps-pop').slideFadeToggle();
 
     }
@@ -55,10 +57,28 @@ $('.header__notifications').on("click", function (event) {
 
 
 $('.header__more').on("click", function (event) {
+    const own = $(this);
     event.preventDefault();
-    $(".header__right").append('<li>"안녕"</li>')
+    outlinedClicked(own);
+})
+
+$('#search__form').on("submit", function (event) {
+    event.preventDefault();
+    window.location.replace("http://localhost:4000/search?keyword=" + event.currentTarget[0].value)
 })
 
 $.fn.slideFadeToggle = function(easing, callback) {
     return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
+  };
+
+  function outlinedClicked (el) {
+    if (el.hasClass('outlined__clicked')) {
+        el.removeClass('outlined__clicked');
+        el.css("color", "#323232");
+        el.css("text-shadow", "-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white")
+    } else {
+        el.addClass('outlined__clicked');
+        el.css("color", "#FFFFFF");
+        el.css("text-shadow", "none");
+    };
   };
