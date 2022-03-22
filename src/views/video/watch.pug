@@ -3,16 +3,29 @@ extends ../base
 block content 
     video(src="/" + video.fileUrl,controls) 
     div
-        p=video.description
-        small=video.createdAt
-    div
-        if !video.owner
-            small 삭제된 계정 님이 올림 
-        else 
-            a(href=`/users/${video.owner._id}`) #{video.owner.name}
-            small 님이 올림
-            if loggedIn     
-                if String(loggedInUser._id) === String(video.owner._id)
-                    a(href=`${video.id}/edit`) 영상 편집 &rarr;
-                    br
-                    a(href=`${video.id}/delete`) 영상 삭제 &rarr;
+        span(class="material-icons" id="play") play_arrow
+        span(class="material-icons" id="mute") volume_off
+        input(type="range", min="0" value="100" max="100")#volume  
+        div
+            span#currentTime 00:00
+            span  / 
+            span#totalTime 00:00
+
+    //-
+        div
+            p=video.description
+            small=video.createdAt
+        div
+            if !video.owner
+                small 삭제된 계정 님이 올림 
+            else 
+                a(href=`/users/${video.owner._id}`) #{video.owner.name}
+                small 님이 올림
+                if loggedIn     
+                    if String(loggedInUser._id) === String(video.owner._id)
+                        a(href=`${video.id}/edit`) 영상 편집 &rarr;
+                        br
+                          a(href=`${video.id}/delete`) 영상 삭제 &rarr;
+
+block srcipt 
+    script(src="/static/js/videoPlayer.js")                     
