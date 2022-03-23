@@ -2,41 +2,40 @@
 @import "./config/_variables";
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 body {
-    font-size: 1vw;
-    background-color: $black;
-    color: #FFFFFF;
-
+  font-size: 1vw;
+  background-color: $black;
+  color: #ffffff;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .btn {
-    background-color: transparent;
-    border: none;
-    &:hover {
-        cursor: pointer;
-    }
+  background-color: transparent;
+  border: none;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-main , footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+main,
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 main {
-    margin-top: 55px;
-    margin-left: 70px;
+  margin-top: 55px;
+  margin-left: 70px;
 }
-
 
 @import "./components/header.scss";
 @import "./components/shared.scss";
+@import "./components/video.scss";
 
-
-@import "./components/footer.scss"
+@import "./components/footer.scss";
