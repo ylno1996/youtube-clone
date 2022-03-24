@@ -10,9 +10,6 @@ const totalVideoTime = document.getElementById("totalTime");
 const timeBar = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 
-const videoJQ = $("video");
-const pBJQ = $("#play");
-
 let volumeValue = 1;
 video.volume = volumeValue;
 
@@ -35,6 +32,9 @@ const handleMetadata = (e) => {
 //비디오 시간이 경과할 때 발생하는 이벤트로 현재의 영상시간을 보여줌
 const handleTimeUpdate = (e) => {
   const sec = Math.floor(video.duration);
+  timeBar.value = video.currentTime;
+  console.log(timeBar.value);
+  console.log(video.currentTime);
   if (sec > 3600) {
     currentVideoTime.innerText = new Date(video.currentTime * 1000)
       .toISOString()
@@ -44,12 +44,17 @@ const handleTimeUpdate = (e) => {
       .toISOString()
       .substring(14, 19);
   }
-  timeBar.value = video.currentTime;
 };
 
 //영상에 마우스 움직임이 감지될때 작동하는 함수로 컨트롤을 소환시킴
 const handleMouseMove = (e) => {
-  controls.classList.add("mouse_on");
+  controls.classList.add("showing");
+};
+
+const handleMouseLeave = (e) => {
+  if (!video.paused) {
+    controls.classList.remove("showing");
+  }
 };
 
 // 플레이 포즈 버튼 (동작버튼) 클릭 시 발생하는 이벤트
@@ -59,10 +64,6 @@ const handlePlayClick = (e) => {
   } else {
     video.pause();
   }
-  console.log(video);
-  console.log(videoJQ);
-  console.log(playBtn);
-  console.log(pBJQ);
 };
 
 // 비디오가 실행될때 동작버튼 변화
@@ -119,10 +120,12 @@ const handleFullScreen = (e) => {
   }
 };
 
+video.addEventListener("click", handlePlayClick);
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteBtn);
 video.addEventListener("loadedmetadata", handleMetadata);
-video.addEventListener("mousemove", handleMouseMove);
+container.addEventListener("mousemove", handleMouseMove);
+container.addEventListener("mouseleave", handleMouseLeave);
 video.addEventListener("play", handlePlayVideo);
 video.addEventListener("pause", handlePauseVideo);
 video.addEventListener("volumechange", handleMuteBtnText);

@@ -4,6 +4,8 @@ block content
     .videoContainer 
         video(src="/" + video.fileUrl) 
         div#videoControls
+            #videoRange 
+                input(type="range", step="0.0001" min="0" max="1" value='0')#timeline
             span(class="material-icons" id="play") play_arrow
             span(class="material-icons" id="mute") volume_off
             input(type="range", min="0" value="100" max="100")#volume  
@@ -11,8 +13,6 @@ block content
                 span#currentTime 00:00
                 span  / 
                 span#totalTime 00:00
-            #videoRange 
-                input(type="range", step="0.001" min="0" max="1" value='0')#timeline
             span#fullScreen.material-icons fullscreen
     //-
         div
