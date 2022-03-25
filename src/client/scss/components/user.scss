@@ -1,0 +1,77 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 15px;
+  padding: 5px 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5%;
+  background-color: #181818;
+  input {
+    width: 85%;
+    margin: 8px;
+    padding: 5px;
+    font-size: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    background-color: #121212;
+    color: #bfbfbf;
+    &:focus {
+      outline: 1px solid rgba(62, 166, 255, 0.7);
+    }
+  }
+  hr {
+    width: 90%;
+    height: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  button {
+    width: 85%;
+    margin: 8px;
+    padding: 3px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #fffafa;
+    color: #ff0000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  div {
+    margin: 8px;
+    padding: 3px;
+    font-size: 16px;
+    color: #d0d0c4;
+    a {
+      &:link {
+        color: #121212;
+      }
+      &:visited {
+        color: #d0d0c4;
+      }
+    }
+  }
+  .github-login {
+    display: flex;
+    justify-content: center;
+    width: 85%;
+    padding: 10px;
+    background-color: #24292f;
+    align-self: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+
+    img {
+      height: 16px;
+      width: 16px;
+      margin-right: 10px;
+    }
+  }
+}
+
+img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+}

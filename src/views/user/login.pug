@@ -3,16 +3,19 @@ extends ../base
 block content 
     if errorMsg
         span=errorMsg
-    form(method="POST")
+    form(method="POST").user-form
         input(name="username",type="text",placeholder="아이디", required)
         input(name="password",type="password",placeholder="비밀번호", required)
-        input(type="submit",value="로그인")
-        br
-        a(href="/users/github/start") 깃허브로 로그인 &rarr;
-    hr
-    div 
-        span 계정이 없으신가요? 
-        a(href="/join") 가입하기 &rarr; 
+        button 로그인
+        hr
+        .github-login
+            img(src="/uploads/img/githubsvg.svg", alt="깃허브")
+            a(href="/users/github/start") 깃허브로 로그인 &rarr;
+        hr
+        .account-q-blcok
+            span 계정이 없으신가요? 
+            a(href="/join") 가입하기 &rarr; 
+    
 
 
 
