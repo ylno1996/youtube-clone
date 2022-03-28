@@ -34,9 +34,19 @@ main {
   margin-left: 70px;
 }
 
+span {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 @import "./components/header.scss";
 @import "./components/shared.scss";
-@import "./components/video.scss";
+@import "./components/video-player.scss";
 @import "./components/user.scss";
 
 @import "./components/footer.scss";

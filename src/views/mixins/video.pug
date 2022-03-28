@@ -5,8 +5,5 @@ mixin video(video)
                 img(src="/uploads/img/thumb.webp", alt="썸네일" , class="thumb")
                 span=video.title
         p=video.description
-        ul
-            each hashtag in video.hashtags
-                li=hashtag
         small=video.createdAt
         hr 

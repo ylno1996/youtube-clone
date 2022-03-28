@@ -11,6 +11,9 @@ const timeBar = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 
 let volumeValue = 1;
+let videoTimer = 0;
+let cursorTimeOut = null;
+
 video.volume = volumeValue;
 
 //비디오 메타데이터 불러올 때 발생하는 이벤트로 비디오 총 영상시간 보여줌
@@ -27,6 +30,8 @@ const handleMetadata = (e) => {
       .substring(14, 19);
   }
   timeBar.max = video.duration;
+  videoTimer = video.duration;
+  console.log(videoTimer);
 };
 
 //비디오 시간이 경과할 때 발생하는 이벤트로 현재의 영상시간을 보여줌
@@ -113,7 +118,6 @@ const handleTimeBarChange = (e) => {
 const handleFullScreen = (e) => {
   if (!document.fullscreenElement) {
     fullScreenBtn.innerText = "fullscreen_exit";
-    container.requestFullscreen();
   } else {
     fullScreenBtn.innerText = "fullscreen";
     document.exitFullscreen();

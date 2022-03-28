@@ -1,0 +1,36 @@
+.videoContainer {
+  width: 70%;
+  position: relative;
+  video {
+    width: 100%;
+  }
+  #videoControls {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    &.showing {
+      opacity: 1;
+    }
+    position: absolute;
+    bottom: 10px;
+    width: 96%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    #videoRange {
+      input {
+        width: 100%;
+      }
+    }
+    #videoOthers {
+      margin: 0 1%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 3fr 25fr auto;
+      align-items: center;
+    }
+  }
+}
+
+#timeline {
+  width: 60vw;
+}
