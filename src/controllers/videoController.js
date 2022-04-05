@@ -85,12 +85,10 @@ export const postUpload = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.log(err);
-    return res
-      .status(400)
-      .render("video/upload", {
-        pageTitle: "비디오 업로드",
-        errM: err._message,
-      });
+    return res.status(400).render("video/upload", {
+      pageTitle: "비디오 업로드",
+      errM: err._message,
+    });
   }
 };
 
@@ -132,4 +130,15 @@ export const search = async (req, res) => {
     });
   }
   return res.render("video/search", { pageTitle: "검색", videos });
+};
+
+export const registerView = async (req, res) => {
+  const id = req.params.id;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.status(405);
+  }
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.status(200);
 };

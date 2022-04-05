@@ -10,9 +10,11 @@ const totalVideoTime = document.getElementById("totalTime");
 const timeBar = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 
+//볼륨 디폴트 값
 let volumeValue = 1;
+
+//비디오 시간 초기설정값 (비디오 메타데이터 불러오기 전)
 let videoTimer = 0;
-let cursorTimeOut = null;
 
 video.volume = volumeValue;
 
@@ -51,14 +53,31 @@ const handleTimeUpdate = (e) => {
   }
 };
 
+//커서 시간 지나면 사라지게 할 용도의 타임아웃
+let cursorTimeOut = null;
+
+const hideControls = () => controls.classList.remove("showing");
+
 //영상에 마우스 움직임이 감지될때 작동하는 함수로 컨트롤을 소환시킴
 const handleMouseMove = (e) => {
-  controls.classList.add("showing");
+  if (!video.paused) {
+    if (cursorTimeOut && !0) {
+      clearTimeout(cursorTimeOut);
+      cursorTimeOut = setTimeout(hideControls, 3000);
+    }
+    controls.classList.add("showing");
+    cursorTimeOut = setTimeout(hideControls, 3000);
+    console.log(cursorTimeOut);
+  }
 };
 
 const handleMouseLeave = (e) => {
   if (!video.paused) {
     controls.classList.remove("showing");
+    if (cursorTimeOut) {
+      clearTimeout(cursorTimeOut);
+      cursorTimeOut = null;
+    }
   }
 };
 
@@ -68,7 +87,10 @@ const handlePlayClick = (e) => {
     video.play();
   } else {
     video.pause();
+    controls.classList.add("showing");
   }
+  clearTimeout(cursorTimeOut);
+  cursorTimeOut = null;
 };
 
 // 비디오가 실행될때 동작버튼 변화
@@ -118,10 +140,15 @@ const handleTimeBarChange = (e) => {
 const handleFullScreen = (e) => {
   if (!document.fullscreenElement) {
     fullScreenBtn.innerText = "fullscreen_exit";
+    container.requestFullscreen();
   } else {
     fullScreenBtn.innerText = "fullscreen";
     document.exitFullscreen();
   }
+};
+
+const handleEnd = () => {
+  controls.classList.add("showing");
 };
 
 video.addEventListener("click", handlePlayClick);
@@ -132,6 +159,7 @@ container.addEventListener("mousemove", handleMouseMove);
 container.addEventListener("mouseleave", handleMouseLeave);
 video.addEventListener("play", handlePlayVideo);
 video.addEventListener("pause", handlePauseVideo);
+video.addEventListener("ended", handleEnd);
 video.addEventListener("volumechange", handleMuteBtnText);
 video.addEventListener("timeupdate", handleTimeUpdate);
 volumeRange.addEventListener("input", handleVolume);

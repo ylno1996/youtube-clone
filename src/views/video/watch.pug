@@ -21,6 +21,8 @@ block content
             small=video.createdAt
         div
             if !video.owner
+
+            
                 small 삭제된 계정 님이 올림 
             else 
                 a(href=`/users/${video.owner._id}`) #{video.owner.name}
