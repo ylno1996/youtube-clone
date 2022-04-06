@@ -6,4 +6,7 @@ mixin video(video)
                 span=video.title
         p=video.description
         small=video.createdAt
+        p 
+            small 조회수 
+            small=video.meta.views 
         hr 

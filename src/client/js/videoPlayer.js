@@ -101,6 +101,7 @@ const handlePlayVideo = (e) => {
 // 비디오가 멈출때 동작버튼 변화
 const handlePauseVideo = (e) => {
   playBtn.innerText = "play_arrow";
+  controls.classList.add("showing");
 };
 
 // 뮤트 버튼 누를 때 각종 변화
@@ -148,7 +149,11 @@ const handleFullScreen = (e) => {
 };
 
 const handleEnd = () => {
-  controls.classList.add("showing");
+  const id = container.dataset.id;
+  console.log(id);
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
 };
 
 video.addEventListener("click", handlePlayClick);
