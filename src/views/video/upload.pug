@@ -3,10 +3,10 @@ extends ../base
 block content
     if errM 
         sapn=errM
-    form(method="POST", action="/videos/upload", enctype="multipart/form-data")
+    form(method="POST", action="/videos/upload", enctype="multipart/form-data").submit-form
         label(for="video") 비디오 파일
         input(type="file", accept="video/*", required, id="video" , name="video")
         input(type="text", placeholder="제목" , required, name="title")
         input(type="text", placeholder="설명" , required, name="description")
         input(type="text", placeholder="해시태그를 쉼표로 구분해주세요.", name="hashtags")
-        input(type="submit", value="영상 업로드")   
+        button 영상 업로드   

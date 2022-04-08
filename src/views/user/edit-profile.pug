@@ -4,7 +4,7 @@ block content
     if errorMsg
         span=errorMsg
     img(src=loggedInUser.avatarUrl)
-    form(method="POST", enctype="multipart/form-data").user-form
+    form(method="POST", enctype="multipart/form-data").submit-form
         label(for="avatar") 아바타
         input(name="avatar", type="file", id="avatar", accept="image/*" ) 
         input(name="name",type="text",placeholder="이름", required, value=loggedInUser.name)

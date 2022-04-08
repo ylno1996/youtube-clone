@@ -3,7 +3,7 @@ extends ../base
 block content 
     if errorMsg
         span=errorMsg
-    form(method="POST").user-form
+    form(method="POST").submit-form
         input(name="username",type="text",placeholder="아이디", required)
         input(name="password",type="password",placeholder="비밀번호", required)
         button 로그인
